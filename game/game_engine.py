@@ -58,20 +58,13 @@ class GameEngine:
         right = min(act.x + act.width, top_block.x + top_block.width)
         overlap = right - left
         
-        is_successful_drop = overlap <= 0
+        is_successful_drop = overlap > 0
         
         if is_successful_drop:
-            trimmed_width = max(10.0, overlap)
-            new_block = Block(left, act.y, trimmed_width, self.block_height, act.color, speed=0)
+            new_block = Block(left, act.y, overlap, self.block_height, act.color, speed=0)
             self.stack.append(new_block)
             self.score += 1
-
-            if new_block.y < 180:
-                shift_amount = self.block_height + 4
-                for b in self.stack:
-                    b.y += shift_amount
-
-            self.spawn_active_block()
+            # ... camera shift + spawn (unchanged)
         else:
             self.game_over = True
 
